@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+     Lista De Tarefas
+{% endblock page_title %}
+
+{% block content %}
+    <h1>Lista de Tarefas</h1>
+
+    {% if sitev_list  %}
+        <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Título</th>
+            <th scope="col">Criado em</th>
+            <th scope="col">Data de entrega</th>
+            <th scope="col">Finalizado em </th>
+            <th scope="col">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for sitev in sitev_list  %}
+                <tr>                    
+                    <th scope="row">{{ sitev.pk }}</th>
+                    <td>{{ sitev.title|default:"-" }}</td>
+                    <td>{{ sitev.created_et|default:"-" }}</td>
+                    <td>{{ sitev.deadline|default:"-" }}</td>
+                    <td>{{ sitev.finished_at|default:"-" }}</td>  
+                    <td>
+                       <a href="{% url 'sitev_complete' pk=sitev.pk %}" class="btn btn-success btn-sm {% if sitev.finished_at %}disabled{% endif %}">Concluir</a>
+                       <a href="{% url 'sitev_update' pk=sitev.pk %}" class="btn btn-secondary btn-sm {% if sitev.finished_at %}disabled{% endif %}">Editar</a>
+                       <a href="{% url 'sitev_delete' pk=sitev.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+                   </td>                                  
+               </tr>
+         {% endfor %}
+     </tbody>
+ </table>
+ {% else %}
+ <p>Não há Tarefas cadastradas!</p>
+ {% endif %}
+
+ <a href="{% url 'sitev_create' %}" class="btn btn-warning">Nova Tarefa</a>
+
+{% endblock content  %}
+
+         
